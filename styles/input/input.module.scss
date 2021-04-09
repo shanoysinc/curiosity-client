@@ -1,0 +1,10 @@
+.input {
+  height: 40px;
+  border: 1.5px solid $color-grey-light;
+  border-radius: 8px;
+  color: $color-grey-light;
+}
+
+.input::placeholder {
+  padding-left: 0.5em;
+}
