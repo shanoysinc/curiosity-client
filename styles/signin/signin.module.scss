@@ -1,0 +1,27 @@
+.container {
+  & > h3 {
+    font-weight: 600;
+    color: $color-dark-2;
+  }
+  & > p {
+    text-align: center;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: $color-dark-3;
+
+    & > .signup__btn {
+      text-decoration: underline;
+      color: $color-primary;
+      cursor: pointer;
+    }
+  }
+}
+
+.form__container {
+  display: flex;
+  flex-direction: column;
+
+  & > * + * {
+    margin-top: 1em;
+  }
+}
