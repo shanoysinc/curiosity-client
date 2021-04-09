@@ -1,9 +1,10 @@
-import styles from "../styles/Home.module.css";
+import styles from "../styles/Home.module.scss";
+import Welcome from "../components/welcome/Welcome";
 
 export default function Home() {
   return (
     <div className={styles.container}>
-      <h1>hello worasl</h1>
+      <Welcome />
     </div>
   );
 }
