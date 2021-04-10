@@ -3,9 +3,7 @@ import { useContext, createContext, useReducer } from "react";
 
 export interface Auth {
   token: string | null;
-  firstName: string | null;
-  lastName: string | null;
-  isAuth: false;
+  userInitials?: string;
 }
 
 interface Action {
@@ -15,11 +13,20 @@ interface Action {
 type Dispatch = (action: Action) => void;
 const initialState: Auth = {
   token: null,
-  firstName: null,
-  lastName: null,
-  isAuth: false,
 };
 const AuthContext = createContext<{ state: Auth; dispatch: Dispatch }>(null);
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+
+  if (!context) {
+    throw new Error(
+      "To access useAuth your function must be enclose inside of an AuthProvider!"
+    );
+  }
+
+  return context;
+};
 
 const authReducer = (_state: Auth, action: Action) => {
   switch (action.type) {
@@ -42,16 +49,4 @@ export const AuthProvider = (props) => {
 
   const value = { state, dispatch };
   return <AuthContext.Provider value={value} {...props} />;
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
- 
-  if (!context) {
-    throw new Error(
-      "To access useAuth your function must be enclose inside of an AuthProvider!"
-    );
-  }
-
-  return context;
 };
