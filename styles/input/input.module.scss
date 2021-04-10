@@ -2,7 +2,8 @@
   height: 40px;
   border: 1.5px solid $color-grey-light;
   border-radius: 8px;
-  color: $color-grey-light;
+  // color: $color-grey-light;
+  padding-left: 0.5em;
 }
 
 .input::placeholder {
