@@ -7,12 +7,16 @@ import { useForm } from "react-hook-form";
 import { useMutation } from "react-query";
 import axios from "axios";
 import { useAuth, Auth } from "../../context/auth";
+import { useRouter } from "next/router";
+import { url } from "../../util/url";
 
 interface AppProps {
   setSignin: React.Dispatch<React.SetStateAction<boolean>>;
 }
+
 const Signin = ({ setSignin }: AppProps) => {
   const { dispatch } = useAuth();
+  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -21,14 +25,16 @@ const Signin = ({ setSignin }: AppProps) => {
 
   const { mutate } = useMutation(
     (data) =>
-      axios.post(`http://${process.env.NEXT_PUBLIC_URL}/api/auth/login`, data, {
+      axios.post(`${url}/auth/login`, data, {
         withCredentials: true,
       }),
     {
       onSuccess: (res) => {
-        const { firstName, lastName, token, isAuth } = res.data as Auth;
-        const payload = { firstName, lastName, token, isAuth };
+        const { token, userInitials } = res.data as Auth;
+        const payload = { token, userInitials };
+        localStorage.setItem("x-credentials", token);
         dispatch({ type: "login", payload });
+        router.push("/news-feed");
       },
     }
   );
@@ -51,24 +57,24 @@ const Signin = ({ setSignin }: AppProps) => {
             validate: { isEmail: (email) => EmailValidator.validate(email) },
           })}
         />
-        <input
-          type="password"
-          className={inputStyles.input}
-          placeholder="Password"
-          {...register("password", { required: true, minLength: 6 })}
-        />
-        <button className={buttonStyles.button}>Sign In</button>
         {errors.email?.type === "required" && (
           <span className={styles.error}>Email is required</span>
         )}
         {errors.email?.type === "isEmail" && (
           <span className={styles.error}>Please enter a valid email</span>
         )}
+        <input
+          type="password"
+          className={inputStyles.input}
+          placeholder="Password"
+          {...register("password", { required: true, minLength: 6 })}
+        />
         {errors.password && (
           <span className={styles.error}>
             Password is must be 6 or more character&#39;s long
           </span>
         )}
+        <button className={buttonStyles.button}>Sign In</button>
       </form>
 
       <p>
